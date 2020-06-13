@@ -30,3 +30,8 @@ using vec2 = glm::dvec2;
 using vec3 = glm::dvec3;
 using vec4 = glm::dvec4;
 	
+typedef PDT::Face_handle   Face_handle;
+typedef PDT::Locate_type   Locate_type;
+typedef PDT::Point         Point;
+typedef PDT::Iso_rectangle rect;
+typedef PDT::Iterator_type it_type;

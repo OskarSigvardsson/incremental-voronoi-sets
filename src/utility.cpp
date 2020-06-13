@@ -24,7 +24,7 @@ bool line_line_intersection(
 {
 	auto det = (v0.x * v1.y - v0.y * v1.x);
 
-	if (abs(det) < 0.001f) {
+	if (abs(det) < 0.0000001) {
 		m0 = NAN;
 		m1 = NAN;
 
@@ -69,12 +69,6 @@ vec2 point(const PDT &trig, const period_point pnt)
 	auto domain = trig.domain();
 	auto width = domain.xmax() - domain.xmin();
 	auto height = domain.ymax() - domain.ymin();
-	
-	// if (print) {
-	// 	std::cout << "("
-	// 			  << pnt.first.x() << " " << pnt.second.x() << ", "
-	// 			  << pnt.first.y() << " " << pnt.second.y() << ") ";
-	// }
 
 	return vec2 {
 		pnt.first.x() + pnt.second.x() * width,
@@ -84,7 +78,5 @@ vec2 point(const PDT &trig, const period_point pnt)
 
 vec2 point(const PDT &trig, const vertex_handle pnt)
 {
-	//std::cout << "(" << pnt->point().x() << "," << pnt->point().y() << ") ";
-	//return vec2 { pnt->point().x(), pnt->point().y() };
 	return point(trig, trig.periodic_point(pnt));
 }

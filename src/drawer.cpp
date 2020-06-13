@@ -9,7 +9,7 @@
 #define DRAWTYPE //(it_type::STORED)
 #define CELLS 1
 #define START 0
-#define SCALE 16.0
+#define SCALE (1024 * 16.0)
 #define DOT_RADIUS 0.25
 #define LINE_THICKNESS 2.0
 

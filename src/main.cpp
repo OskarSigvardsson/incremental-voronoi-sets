@@ -1,17 +1,10 @@
 #include "imports.hpp"
 #include "drawer.hpp"
 #include "utility.hpp"
+#include "options.hpp"
 
-typedef PDT::Face_handle   Face_handle;
-typedef PDT::Locate_type   Locate_type;
-typedef PDT::Point         Point;
-typedef PDT::Iso_rectangle rect;
-typedef PDT::Iterator_type it_type;
-
-#define SIZE 1024
-//#define COUNT (1024*1024)
+#define SIZE 1
 #define COUNT 1048576
-//#define COUNT 100000
 
 struct tris
 {
@@ -28,6 +21,8 @@ struct tris
 	
 	tris(vec2 p0,
 		 vec2 p1,
+
+
 		 vec2 p2,
 		 vertex_handle v0,
 		 vertex_handle v1,
@@ -198,85 +193,42 @@ static int with_queue(vec2 p0, vec2 p1)
 	return 0;
 }
 
-// static int brute_force(vec2 p0, vec2 p1)
-// {
-// 	std::cout << "------------------------------" << std::endl;
-// 	std::cout << "brute_force" << std::endl;
 
-// 	PDT trig(rect(0,0,SIZE,SIZE));
+void print_help() {
+	std::cout << R"HELP(Incremental voronoi set generator
 
-// 	std::cout << std::endl;
+Usage:
+	ivs -n <count> [options] [file]
 
-// 	trig.insert(Point { p0.x, p0.y });
-// 	trig.insert(Point { p1.x, p1.y });
+General options:
+    -h, --help                  Print this help text
+    -v, --verbose               Be verbose
+    -s, --silent                Don't print progress information
 
-// 	for (int i = 2; i < COUNT; i++) {
-// 		auto fb = trig.faces_begin();
-// 		auto fe = trig.faces_end();
+Generation options:
+    -n, --number                Number of total points to generate                    
+    -s, --seed <n>              Seed for RNG
+    -c, --seed-count <n>        Number of initial seed points (default = 2)
 
-// 		double largest = 0;
-// 		vec2 new_point;
-		
-// 		for (auto it = fb; it != fe; it++) {
-// 			auto triangle = trig.periodic_triangle(it);
+Drawing options:
+	-f, --draw-final <file>     Save final image to file
+	-i, --draw-inter <files>    Save intermediate images to file
+                                Example: "-i IMG_%05d.png"
 
-// 			auto p0 = point(trig, triangle[0]);
-// 			auto p1 = point(trig, triangle[1]);
-// 			auto p2 = point(trig, triangle[2]);
+    --draw-sites                Draw the voronoi sites
+    --draw-voronoi              Draw the voronoi diagram
+    --draw-delaunay             Draw the Delaunay triangulation 
+    --draw-circumcircles        Draw the circumcircles of the triangulation
+    
+    -p, --point-size <n>        Size of a drawn point
+    -l, --line-width <n>        Width a drawn line 
+    -i, --img-size <n>          Saved images size (output images are square, this 
+                                is the size of one side)
+)HELP";
+}
 
-// 			auto c = circumcircle_center(p0, p1, p2);
-// 			auto curr = glm::length(c - p0);
-
-// 			if (curr > largest) {
-// 				largest = curr;
-// 				new_point = c;
-// 			}
-// 		}
-
-// 		vertex_handle inserted;
-
-// 		if (largest == 0) {
-// 			std::cerr << "Couldn't find largest" << std::endl;
-// 			return 1;
-// 		} else {
-// 			while (new_point.x < 0) new_point.x += SIZE;
-// 			while (new_point.x >= SIZE) new_point.x -= SIZE;
-// 			while (new_point.y < 0) new_point.y += SIZE;
-// 			while (new_point.y >= SIZE) new_point.y -= SIZE;
-
-// 			assert(new_point.x >= 0);
-// 			assert(new_point.x < SIZE);
-// 			assert(new_point.y >= 0);
-// 			assert(new_point.y < SIZE);
-
-// 			inserted = trig.insert(Point(new_point.x, new_point.y));
-// 		}
-
-// 		// std::ostringstream ss;
-// 		// ss  << "pngs/out-"
-// 		// 	<< std::setw(2) << std::setfill('0') << i
-// 		// 	<< ".png";
-		
-// 		// std::string file(ss.str());
-// 	 	// draw_trig(file.c_str(), trig, inserted);
-// 		// auto sheets = trig.number_of_sheets();
-// 		// std::cout << sheets[0] * sheets[1] << std::endl;
-// 		//std::cout << "\rAdded point " << i << " of " << COUNT << "                   ";
-// 		log_progress(i, COUNT);
-// 	}
-
-// 	log_progress(COUNT, COUNT, true);
-
-// 	//draw_trig("pngs/brute.png", trig, vertex_handle{});
-
-// 	return 0;
-// }
-
-int main()
+int main(int argc, char **argv)
 {
-	//Iso_rectangle domain(0,0,SIZE,SIZE);
-
-
 	std::mt19937 engine { 15 } ;
 	std::uniform_real_distribution dist;
 
@@ -286,51 +238,6 @@ int main()
 	vec2 p1 { rand(), rand() };
 
 	if(with_queue(p0, p1)) return 1;
-	//if(brute_force(p0, p1)) return 1;
-	
-	// std::vector<Point> ps;
-	// for (int i = 0; i < COUNT; i++) {
-	// 	ps.emplace_back(rand(), rand());
-	// }
-
-	// std::vector<Point> ps {
-	// 	{ 25, 25 },
-	// 	{ 75, 25 },
-	// 	{ 50, 75 },
-	// };
-
-
-	//trig.insert(ps.begin(), ps.end());
-	
-	// for (int i = 0; i < ps.SIZE(); i++) {
-	// 	auto inserted = trig.insert(ps[i]);
-
-	// 	std::ostringstream ss;
-	// 	ss  << "pngs/out-"
-	// 		<< std::setw(2) << std::setfill('0') << i
-	// 		<< ".png";
-		
-	// 	std::string file(ss.str());
-		
-	// 	draw_trig(file.c_str(), trig, inserted);
-	// }
-
-
-	// auto fb = trig.faces_begin();
-	// auto fe = trig.faces_end();
-
-	// for (auto it = fb; it != fe; it++) {
-	// 	auto v0 = it->vertex(0);
-	// 	auto v1 = it->vertex(1);
-	// 	auto v2 = it->vertex(2);
-
-	// 	std::cout
-	// 		<< "(" << *v0 << ") "
-	// 		<< "(" << *v1 << ") "
-	// 		<< "(" << *v2 << ") "
-	// 		<< std::endl;
-	// }
-
 
 	return 0;
 }
