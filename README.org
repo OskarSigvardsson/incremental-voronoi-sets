@@ -38,7 +38,7 @@ On Arch Linux, using pacman:
 #+END_SRC
 
 I'm pretty sure it's the same on most UNIXy systems with package managers. Let
-me know if you have trouble
+me know if you have trouble.
 
 *** Building
 This project uses CMake for it's build script, so build method is pretty
@@ -114,7 +114,7 @@ Set of 4096 points with 10 seed points
 ** Performance
 The implementation is quite performant. The paper suggest using a priority queue
 to store candidate circumcircles so that the algorithm will not be less than
-O(n), which is eactly what I did, and it works very nicely. The details of the
+O(n²), which is eactly what I did, and it works very nicely. The details of the
 algorithm can be found in the file [[src/ivs.cpp]] (it's has lengthy comments and
 documentation). The generator performs quite well: on my computer it generates
 an IVS set of 1024*1024 points in little under 3 minutes. The paper states it
