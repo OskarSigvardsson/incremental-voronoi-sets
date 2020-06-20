@@ -1,5 +1,23 @@
-#include "imports.hpp"
-#include "utility.hpp"
+/**
+ * Copyright 2020 Oskar Sigvardsson
+ *
+ * This file is part of ivs-generator.
+ * 
+ * ivs-generator is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * ivs-generator is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * ivs-generator. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#include "main.hpp"
 
 double signed_area(vec2 a, vec2 b, vec2 c)
 {
@@ -64,7 +82,7 @@ vec2 circumcircle_center(vec2 c0, vec2 c1, vec2 c2) {
 	return mp0 + m0 * v0;
 }
 
-vec2 point(const PDT &trig, const period_point pnt)
+vec2 point(const PDT &trig, const PDT::Periodic_point pnt)
 {
 	auto domain = trig.domain();
 	auto width = domain.xmax() - domain.xmin();
@@ -72,11 +90,10 @@ vec2 point(const PDT &trig, const period_point pnt)
 
 	return vec2 {
 		pnt.first.x() + pnt.second.x() * width,
-			pnt.first.y() + pnt.second.y() * height };
+		pnt.first.y() + pnt.second.y() * height };
 }
 
-
-vec2 point(const PDT &trig, const vertex_handle pnt)
+vec2 point(const PDT &trig, const PDT::Vertex_handle pnt)
 {
 	return point(trig, trig.periodic_point(pnt));
 }

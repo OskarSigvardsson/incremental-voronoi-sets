@@ -1,10 +1,8 @@
-# Specify the minimum version for CMake
 cmake_minimum_required(VERSION 3.9.4)
-# CMAKE_POLICY(SET CMP0072 NEW)
-# Project name
 
-set(CMAKE_CXX_STANDARD 17)  # enable C++11 standard
+set(CMAKE_CXX_STANDARD 17) 
 set(CMAKE_BUILD_TYPE "Release")
+
 project(ivs)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
@@ -12,16 +10,9 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
-
-
-if (MSVC)
-  # warning level 4 and all warnings as errors
-  add_compile_options(/W3 /WX)
-else()
-  # lots of warnings and all warnings as errors
-  add_compile_options(-Wall)
+if(NOT MSVC) 
+    add_compile_options(-Wall -Werror)
 endif()
-
 
 file(GLOB all_SRCS
   "${PROJECT_SOURCE_DIR}/src/*.c"
@@ -49,5 +40,4 @@ if (CMAKE_BUILD_TYPE MATCHES RELEASE)
   set_property(TARGET ivs PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 
-
-target_precompile_headers(ivs PRIVATE "<cairo.h>" "src/imports.hpp")
+#target_precompile_headers(ivs PRIVATE "<cairo.h>" "src/main.hpp")
