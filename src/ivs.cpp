@@ -226,9 +226,8 @@ void generate_ivs(const std::vector<vec2> &seeds)
 
 
 		// This is a little bit silly, i could just use fract or whatever, but
-		// it used to be that the domain could be anything, not just [0,1).
-		// Anyway, it's almost never more than one or two out because of how the
-		// the nine-sheet thing works, and this is stable and works well.
+		// it used to be that the domain could be anything, not just [0,1). But
+		// this is robust and fast enough
 		while (new_point.x <  0) new_point.x += 1;
 		while (new_point.x >= 1) new_point.x -= 1;
 		while (new_point.y <  0) new_point.y += 1;

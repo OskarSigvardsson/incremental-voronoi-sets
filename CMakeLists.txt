@@ -40,4 +40,4 @@ if (CMAKE_BUILD_TYPE MATCHES RELEASE)
   set_property(TARGET ivs PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 
-#target_precompile_headers(ivs PRIVATE "<cairo.h>" "src/main.hpp")
+target_precompile_headers(ivs PRIVATE "<cairo.h>" "src/main.hpp")
